@@ -123,7 +123,16 @@ function kickLegacyServerUntilItWorks(callback) {
   });
 }
 
-function buySingleOutfit() {}
+function buySingleOutfit(outfit, callback) {
+  let calledOnce = false;
+  request(`/outfits/${outfit}`, (err, response) => {
+    if(!calledOnce) {
+      if(err) callback(err);
+      else callback(err, response);
+      calledOnce = true;
+    }
+  });
+}
 
 module.exports = {
   buySingleOutfit,
