@@ -52,17 +52,17 @@ function fetchCatPics(catPics, callback) {
   for(let i = 0; i < catPics.length; i++) {
     request(`/pics/${catPics[i]}`, (err, response) => {
       requestCount++;
-      //console.log(err, response);
       if(err) {
         responses.push('placeholder.jpg');
       } else {
         responses.push(response);
       }
       if(requestCount === catPics.length) {
-        callback(err, responses);
+        callback(null, responses);
       }
     });
   }
+  if(catPics.length === 0) callback(null);
 }
 
 function fetchAllCats(callback) {
@@ -113,7 +113,6 @@ function fetchOwnersWithCats(callback) {
 }
 
 function kickLegacyServerUntilItWorks(callback) {
-  //callback(null);
   request('/legacy-status', (err, status) => {
     if(err) {
       kickLegacyServerUntilItWorks(callback)
