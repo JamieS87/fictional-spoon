@@ -28,21 +28,21 @@ function projectGenerator(projectName, cb) {
                                 else {
                                   exec('npm init -y', {cwd: `./${projectName}`}, (err, stdout, stderr) => {
                                     if(err) cb(err);
-                                    fs.readFile(`./${projectName}/package.json`, 'utf-8', (err, data) => {
-                                      if(err) cb(err);
-                                      else {
-                                        const packageObject = JSON.parse(data);
-                                        packageObject.devDependencies = {
-                                          "jest": "^27.3.1"
+                                    else {
+                                      fs.readFile(`./${projectName}/package.json`, 'utf-8', (err, data) => {
+                                        if(err) cb(err);
+                                        else {
+                                          const packageObject = JSON.parse(data);
+                                          packageObject.devDependencies = {"jest": "^27.3.1"};
+                                          packageObject.scripts.test = 'jest';
+                                          fs.writeFile(`./${projectName}/package.json`, JSON.stringify(packageObject), (err, data) => {
+                                            if(err) cb(err);
+                                            else cb(null);
+                                          });
                                         }
-                                        packageObject.scripts.test = 'jest';
-                                        fs.writeFile(`./${projectName}/package.json`, JSON.stringify(packageObject), (err, data) => {
-                                          if(err) cb(err);
-                                          cb(null);
-                                        });
-                                      }
-                                    });
-                                  })
+                                      });
+                                    }
+                                  });
                                 }
                               });
                             }
